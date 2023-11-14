@@ -45,28 +45,45 @@ function QueryPage() {
 
             <table>
                 <thead>
-                    <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Gender</th>
-                    <th>GPA</th>
-                    <th>Level</th>
-                    <th>Address</th>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Gender</th>
+                        <th>GPA</th>
+                        <th>Level</th>
+                        <th>Address</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {
-                    results.map((student: Student, i) => (
-                        <tr key={i}>
-                            <td>{student.id}</td>
-                            <td>{student.firstName}</td>
-                            <td>{student.lastName}</td>
-                            <td>{student.gender}</td>
-                            <td>{student.gpa}</td>
-                            <td>{student.level}</td>
-                            <td>{student.address}</td>
-                        </tr>
-                    ))
-                }
+                    {
+                        results.map((student: Student, i) => (
+                            <tr key={i}>
+                                <td>{student.id}</td>
+                                <td>{student.firstName}</td>
+                                <td>{student.lastName}</td>
+                                <td>{student.gender}</td>
+                                <td>{student.gpa}</td>
+                                <td>{student.level}</td>
+                                <td>{student.address}</td>
+                                <td><button
+                                    onClick={(_) => {
+                                        fetch(`http://localhost:8080/Student/deleteByID/${student.id}`, {
+                                            method: "DELETE"
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data) {
+                                                    setResults(results.filter(s => s.id !== student.id));
+                                                }
+                                            })
+                                    }}
+                                >
+                                    Delete
+                                </button></td>
+                            </tr>
+                        ))
+                    }
                 </tbody>
             </table>
         </div>
